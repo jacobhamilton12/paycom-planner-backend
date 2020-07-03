@@ -6,7 +6,6 @@ $postdata = file_get_contents("php://input");
 if(isset($postdata) && !empty($postdata)){
     $request = json_decode($postdata);
 
-    print_r($request);
     $email = $request->email;
     $password = $request->password;
 
