@@ -41,6 +41,7 @@ if(isset($postdata) && !empty($postdata)){
     mysqli_stmt_prepare($stmt, $sql);
     mysqli_stmt_bind_param($stmt, "ss", $email, $password);
     mysqli_stmt_execute($stmt);
+    echo "Success";
 
     http_response_code(201);
 }
