@@ -10,6 +10,7 @@ if(isset($postdata) && !empty($postdata)){
     $password = $request->password;
     $filter = "/^[a-zA-Z0-9._@]+$/";
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    $hashedPass = password_hash($password, PASSWORD_DEFAULT);
 
 
     if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
@@ -39,9 +40,11 @@ if(isset($postdata) && !empty($postdata)){
     ) VALUES (?, ?) ";
     $stmt = mysqli_stmt_init($conn);
     mysqli_stmt_prepare($stmt, $sql);
-    mysqli_stmt_bind_param($stmt, "ss", $email, $password);
+    mysqli_stmt_bind_param($stmt, "ss", $email, $hashedPass);
     mysqli_stmt_execute($stmt);
     echo "Success";
 
     http_response_code(201);
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);
 }

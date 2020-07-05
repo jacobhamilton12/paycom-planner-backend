@@ -7,14 +7,42 @@ if(isset($postdata) && !empty($postdata)){
     $request = json_decode($postdata);
     $email = $request->email;
     $password = $request->password;
+    $filter = "/^[a-zA-Z0-9._@]+$/";
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
-    $sql = "SELECT * FROM `users` WHERE `email` = '{$email}' and `password` = '{$password}'";
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        echo ("Email is invalid");
+        exit();
+    }
+    if(!preg_match($filter, $password)){
+        echo ("Password is invalid");
+        exit();
+    }
 
-    $result = mysqli_query($conn,$sql);
-    $matchFound = mysqli_num_rows($result) > 0 ? 'success' : 'failed';
-    echo $matchFound;
+    $sql = "SELECT `email` FROM `users` WHERE `email`=?";
+    $stmt = mysqli_stmt_init($conn);
+    mysqli_stmt_prepare($stmt, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_store_result($stmt);
+    $num_rows = mysqli_stmt_num_rows($stmt);
+    if($num_rows === 0){
+        echo ("failed");
+        exit();
+    };
+
+    $sql = "SELECT `password` FROM `users` WHERE `email` = ?";
+    $stmt = mysqli_stmt_init($conn);
+    mysqli_stmt_prepare($stmt, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+    echo password_verify($password, $row['password']) ? "success" : "false";
 
     http_response_code(201);
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);
 }
 
 exit;
