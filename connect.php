@@ -1,19 +1,13 @@
 <?php
+$servername = "localhost";
+$username = "root";
+$password = "Phoenix";
+$dbname = "paycom_event_planner";
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', 'Phoenix');
-define('DB_NAME', 'paycom_event_planner');
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-function connect(){
-    $connect = mysqli_connect( DB_HOST , DB_USER , DB_PASS , DB_NAME );
-
-    if(mysqli_connect_errno($connect)){
-        die("FAILED TO CONNECT: " . mysqli_connect_error());
-    }
-
-    mysqli_set_charset($connect, "utf8");
-
-    return $connect;
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
 }
-$con = connect();
