@@ -48,3 +48,4 @@ if(isset($postdata) && !empty($postdata)){
     mysqli_stmt_close($stmt);
     mysqli_close($conn);
 }
+exit;

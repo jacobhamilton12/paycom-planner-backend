@@ -31,14 +31,20 @@ if(isset($postdata) && !empty($postdata)){
         exit();
     };
 
-    $sql = "SELECT `password` FROM `users` WHERE `email` = ?";
+    $sql = "SELECT * FROM `users` WHERE `email` = ?";
     $stmt = mysqli_stmt_init($conn);
     mysqli_stmt_prepare($stmt, $sql);
     mysqli_stmt_bind_param($stmt, "s", $email);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     $row = mysqli_fetch_assoc($result);
-    echo password_verify($password, $row['password']) ? "success" : "false";
+    if(password_verify($password, $row['password'])){
+        echo "success";
+        $_SESSION['userId'] = $row['id'];
+        $_SESSION['userEmail'] = $row['email'];
+    }else{
+        echo "failed";
+    }
 
     http_response_code(201);
     mysqli_stmt_close($stmt);

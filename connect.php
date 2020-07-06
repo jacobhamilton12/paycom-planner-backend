@@ -1,4 +1,6 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+session_start();
 $servername = "localhost";
 $username = "root";
 $password = "Phoenix";
