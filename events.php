@@ -8,7 +8,7 @@ if(isset($postdata) && !empty($postdata) && isset($_SESSION['userId']) && isset(
     $uemail = $_SESSION['userEmail'];
     $request = json_decode($postdata);
     $name = $request->name;
-    $description = $request->desc;
+    $description = $request->description;
     $date = $request->date;
     echo "success";
 }else{
