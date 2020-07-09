@@ -10,16 +10,17 @@ if(isset($postdata) && !empty($postdata) && isset($_SESSION['userId']) && isset(
     $name = $request->name;
     $description = $request->description;
     $date = $request->date;
+    $id = $date . $name;
     echo "success";
 }else{
     echo "Not logged in";
     exit();
 }
 
-$sql = "INSERT INTO `events` (`name`, `user`, `description`, `date`) VALUES (?, ?, ?, ?)";
+$sql = "INSERT INTO `events` (`id`,`name`, `user`, `description`, `date`) VALUES (?, ?, ?, ?, ?)";
 $stmt = mysqli_stmt_init($conn);
 mysqli_stmt_prepare($stmt, $sql);
-mysqli_stmt_bind_param($stmt, "ssss", $name, $uemail, $description, $date);
+mysqli_stmt_bind_param($stmt, "sssss", $id, $name, $uemail, $description, $date);
 mysqli_stmt_execute($stmt);
 
 http_response_code(201);
