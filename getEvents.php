@@ -1,7 +1,7 @@
 <?php
 require 'connect.php';
 
-$sql = "SELECT name, user, description, date FROM events ORDER BY id";
+$sql = "SELECT name, user, description, date, attendees FROM events ORDER BY id";
 
 
 $sth = mysqli_query($conn, $sql);

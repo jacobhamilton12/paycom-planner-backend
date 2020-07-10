@@ -10,6 +10,7 @@ if(isset($postdata) && !empty($postdata) && isset($_SESSION['userId']) && isset(
     $name = $request->name;
     $description = $request->description;
     $date = $request->date;
+    $attendees = $request->attendees;
     $id = $date . $name;
     echo "success";
 }else{
@@ -17,10 +18,10 @@ if(isset($postdata) && !empty($postdata) && isset($_SESSION['userId']) && isset(
     exit();
 }
 
-$sql = "INSERT INTO `events` (`id`,`name`, `user`, `description`, `date`) VALUES (?, ?, ?, ?, ?)";
+$sql = "INSERT INTO `events` (`id`,`name`, `user`, `description`, `date`, `attendees`) VALUES (?, ?, ?, ?, ?, ?)";
 $stmt = mysqli_stmt_init($conn);
 mysqli_stmt_prepare($stmt, $sql);
-mysqli_stmt_bind_param($stmt, "sssss", $id, $name, $uemail, $description, $date);
+mysqli_stmt_bind_param($stmt, "ssssss", $id, $name, $uemail, $description, $date, $attendees);
 mysqli_stmt_execute($stmt);
 
 http_response_code(201);
